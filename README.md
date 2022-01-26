@@ -1,15 +1,16 @@
-#Twitter Search Application
+# Twitter Search Application
 
-###Local set up
+### Local set up
 
 For local development docker environment can be used.
 To start container use the command  
 `docker-compose up`
 
-###Server set up
+### Server set up
 Copy all the files to the server. Make sure directory is writable.
-
-###Running the application
+Run the command to install dependencies  
+`php composer.phar install --no-interaction --no-plugins --no-scripts --no-dev --prefer-dist`
+### Running the application
 Run the command  
 `php index.php searchquery`  
 You can use any word as an argument instead of "searchquery".
