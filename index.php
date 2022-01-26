@@ -15,6 +15,7 @@ print_r("Creating CSV \n");
 $header = [
     'id',
     'name',
+    'screen_name',
 //    'location',
 //    'description',
     'url'];
@@ -32,6 +33,7 @@ do {
         $piece = [];
         $piece[] = $account->id;
         $piece[] = $account->name;
+        $piece[] = $account->screen_name;
 //        $piece[] = $account->location;
 //        $piece[] = $account->description;
         $piece[] = $account->url;
