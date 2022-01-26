@@ -13,5 +13,6 @@ Run the command to install dependencies
 ### Running the application
 Run the command  
 `php index.php searchquery`  
-You can use any word as an argument instead of "searchquery".
+You can use any word as an argument instead of "searchquery". 
+IMPORTANT: search is performed not only by username, but also in other fields.  
 Result CSV files wil be written in the same directory.
