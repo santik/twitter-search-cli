@@ -18,9 +18,25 @@ $header = [
     'id',
     'name',
     'screen_name',
-//    'location',
-//    'description',
-    'url'];
+    'location',
+    'description',
+    'url',
+    'followers_count',
+    'friends_count',
+    'listed_count',
+    'created_at',
+    'favourites_count',
+    'utc_offset',
+    'time_zone',
+    'geo_enabled',
+    'verified',
+    'statuses_count',
+    'lang',
+    'following',
+    'follow_request_sent',
+    'notifications',
+    'last_active'
+];
 //load the CSV document from a string
 $csv = Writer::createFromString();
 
@@ -36,9 +52,25 @@ do {
         $piece[] = $account->id;
         $piece[] = $account->name;
         $piece[] = $account->screen_name;
-//        $piece[] = $account->location;
-//        $piece[] = $account->description;
+        $piece[] = $account->location;
+        $piece[] = str_replace("\n", " ", $account->description);
         $piece[] = $account->url;
+        $piece[] = $account->followers_count;
+        $piece[] = $account->friends_count;
+        $piece[] = $account->listed_count;
+        $piece[] = $account->created_at;
+        $piece[] = $account->favourites_count;
+        $piece[] = $account->utc_offset;
+        $piece[] = $account->time_zone;
+        $piece[] = $account->geo_enabled;
+        $piece[] = $account->verified;
+        $piece[] = $account->statuses_count;
+        $piece[] = $account->lang;
+        $piece[] = $account->following;
+        $piece[] = $account->follow_request_sent;
+        $piece[] = $account->notifications;
+        $piece[] = $account->status->created_at;
+
         $data[] = $piece;
     }
 
@@ -50,7 +82,7 @@ do {
 } while (count($result) != 0 && $page < 52);
 
 
-$filename = "search_" . $query . "_" . time() . ".csv";
+$filename = "search_" . $query . ".csv";
 print_r("Writing results to the file $filename \n");
 file_put_contents($filename, $csv);
 
