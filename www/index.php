@@ -99,7 +99,7 @@ do {
 
         if ($saveResultsToDatabase) {
             $dbData = $dbTools->cleanInput($dbData);
-            $dbTools->insert('twitter', $dbData);
+            $dbTools->upsert('twitter', $dbData);
         }
     }
 
