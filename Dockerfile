@@ -1,18 +1,11 @@
-FROM php:7.0-apache
-
-RUN apt-get update && apt-get install -y \
-        libfreetype6-dev \
-        libmcrypt-dev \
-        libicu-dev \
-        libxml2-dev \
-        vim \
-        wget \
-        unzip \
-        git \
-    && docker-php-ext-install -j$(nproc) iconv intl xml soap mcrypt opcache mbstring
-
-RUN chmod -R 777 /var/www/html
-COPY . /var/www/html
+FROM php:7.2-apache
+RUN a2enmod rewrite 
+RUN docker-php-ext-install pdo pdo_mysql mysqli
+RUN apt-get update \
+    && apt-get install -y libzip-dev \
+    && apt-get install -y zlib1g-dev \
+    && rm -rf /var/lib/apt/lists/* \
+    && docker-php-ext-install zip
 
 RUN php composer.phar install \
     --no-interaction \
@@ -20,5 +13,3 @@ RUN php composer.phar install \
     --no-scripts \
     --no-dev \
     --prefer-dist
-
-EXPOSE 80

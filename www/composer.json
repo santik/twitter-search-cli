@@ -1,0 +1,11 @@
+{
+  "require": {
+    "dg/twitter-php": "^4.1",
+    "league/csv": "^9.5",
+    "adodb/adodb-php": "^5.21"
+  },
+
+  "autoload": {
+    "psr-4": {"SearchTools\\": "src/"}
+  }
+}

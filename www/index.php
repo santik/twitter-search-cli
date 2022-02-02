@@ -2,11 +2,15 @@
 ini_set("display_errors", 1);
 error_reporting(E_ALL);
 
+require_once "config.php";
+
 use League\Csv\Writer;
+use DG\Twitter\Twitter;
+use SearchTools\DBTools;
 
 print_r("Starting twitter search app \n");
 
-require_once "config.php";
+$dbTools = new DBTools($db);
 
 $twitter = new Twitter($consumerKey, $consumerSecret, $accessToken, $accessTokenSecret);
 
@@ -49,34 +53,56 @@ do {
     $data = [];
     foreach ($result as $account) {
         $piece = [];
+        $dbData = [];
+
         $piece[] = $account->id;
+        $dbData['id'] = $account->id;
         $piece[] = $account->name;
+        $dbData['name'] = $account->name;
         $piece[] = $account->screen_name;
+        $dbData['screen_name'] = $account->screen_name;
         $piece[] = $account->location;
-        $piece[] = str_replace("\n", " ", $account->description);
+        $dbData['location'] = $account->location;
+        $description = mb_convert_encoding(
+            str_replace("\n", " ", $account->description),
+            'UTF-8', 'UTF-8'
+        );
+        $piece[] = $description;
+        $dbData['description'] = $description;
         $piece[] = $account->url;
+        $dbData['url'] = $account->url;
         $piece[] = $account->followers_count;
+        $dbData['followers_count'] = $account->followers_count;
         $piece[] = $account->friends_count;
+        $dbData['friends_count'] = $account->friends_count;
         $piece[] = $account->listed_count;
+        $dbData['listed_count'] = $account->listed_count;
         $piece[] = $account->created_at;
+        $dbData['created_at'] = $account->created_at;
         $piece[] = $account->favourites_count;
+        $dbData['favourites_count'] = $account->favourites_count;
         $piece[] = $account->utc_offset;
         $piece[] = $account->time_zone;
         $piece[] = $account->geo_enabled;
         $piece[] = $account->verified;
+        $dbData['verified'] = $account->verified;
         $piece[] = $account->statuses_count;
+        $dbData['statuses_count'] = $account->statuses_count;
         $piece[] = $account->lang;
         $piece[] = $account->following;
         $piece[] = $account->follow_request_sent;
         $piece[] = $account->notifications;
         $piece[] = $account->status->created_at;
+        $dbData['last_active'] = $account->status->created_at;
 
         $data[] = $piece;
+
+        if ($saveResultsToDatabase) {
+            $dbData = $dbTools->cleanInput($dbData);
+            $dbTools->insert('twitter', $dbData);
+        }
     }
 
-    print_r("Search results: \n");
-    print_r($data);
-    print_r("\n");
     $csv->insertAll($data);
     $page++;
 } while (count($result) != 0 && $page < 52);

@@ -2,3 +2,4 @@
 vendor
 *.iml
 *.csv
+www/config.php
